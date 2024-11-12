@@ -1,0 +1,32 @@
+name: appkost
+description: "A new Flutter project."
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  url_launcher: ^6.0.20
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - lib/assets/images/Rectangle.png
+    - lib/assets/images/kopii.jpg
+    - lib/assets/images/kost.png
+    - lib/assets/images/profil.png
+    - lib/assets/images/splashScreen.png
+    - lib/assets/images/kamar.jpg
+    - lib/assets/images/kamarMandi.jpeg
