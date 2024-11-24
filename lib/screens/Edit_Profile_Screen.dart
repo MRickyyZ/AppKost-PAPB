@@ -1,15 +1,94 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class EditProfileScreen extends StatelessWidget {
+class EditProfileScreen extends StatefulWidget {
+  @override
+  _EditProfileScreenState createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
   final TextEditingController aboutController = TextEditingController();
 
-  EditProfileScreen() {
-    // Placeholder data pengguna yang bisa diisi sesuai kebutuhan
-    nameController.text = 'Muhammad Ricky Zakaria';
-    emailController.text = '11211062@gmail.com';
-    aboutController.text = 'Ini adalah bagian tentang saya. Anda dapat menambahkan informasi singkat tentang pengguna di sini.';
+  // Fungsi untuk mengambil token dari SharedPreferences
+  Future<String> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('auth_token');
+    if (token == null || token.isEmpty) {
+      print("Token tidak ditemukan atau kosong");
+    } else {
+      print("Token ditemukan: $token");
+    }
+    return token ?? '';  // Mengembalikan token atau string kosong
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchProfile();
+  }
+
+  // Fungsi untuk mengambil data profile menggunakan GET request
+  Future<void> _fetchProfile() async {
+    var token = await getToken(); // Ambil token dari SharedPreferences
+    if (token.isEmpty) {
+      print('Token tidak ditemukan');
+      return;
+    }
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',  // Gunakan token untuk otentikasi
+    };
+
+    var response = await http.get(
+      Uri.parse('http://192.168.1.2:3000/auth/profile'),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      setState(() {
+        nameController.text = data['name'] ?? '';
+        aboutController.text = data['about'] ?? '';
+      });
+    } else {
+      print('Gagal memuat profil: ${response.reasonPhrase}');
+    }
+  }
+
+  // Fungsi untuk memperbarui profil menggunakan PUT request
+  Future<void> _updateProfile() async {
+    final token = await getToken(); // Ambil token dari SharedPreferences
+    if (token.isEmpty) {
+      print('Token kosong atau tidak ditemukan');
+      return;
+    }
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',  // Gunakan token untuk otentikasi
+    };
+
+    var body = json.encode({
+      "name": nameController.text,
+      "about": aboutController.text,
+    });
+
+    var response = await http.put(
+      Uri.parse('http://192.168.1.2:3000/auth/profile'),
+      headers: headers,
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      print('Profil berhasil diperbarui');
+      Navigator.pushReplacementNamed(context, '/profile'); // Kembali ke halaman profil
+    } else {
+      print('Gagal memperbarui profil: ${response.reasonPhrase}');
+    }
   }
 
   @override
@@ -57,18 +136,6 @@ class EditProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  labelStyle: TextStyle(color: Color(0xFF0D47A1)), // Dark Blue
-                  border: OutlineInputBorder(),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF1A73E8)), // Primary Blue
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
                 controller: aboutController,
                 maxLines: 4,
                 decoration: const InputDecoration(
@@ -83,10 +150,7 @@ class EditProfileScreen extends StatelessWidget {
               const SizedBox(height: 40),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Tambahkan logika untuk menyimpan perubahan profil
-                    Navigator.pop(context); // Kembali ke halaman profile
-                  },
+                  onPressed: _updateProfile,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1A73E8), // Primary Blue
                     padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),

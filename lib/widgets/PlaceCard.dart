@@ -18,17 +18,30 @@ class PlaceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/detail');
+        // Navigasi ke halaman detail dengan mengirim data
+        Navigator.pushNamed(
+          context,
+          '/detail',
+          arguments: {
+            'name': name,
+            'image': image,
+            'price': price,
+            'location': location,
+          },
+        );
       },
       child: Container(
         padding: const EdgeInsets.all(8.0), // Padding around the card
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300, width: 1), // Border with light grey color
+          border: Border.all(
+              color: Colors.grey.shade300,
+              width: 1), // Border with light grey color
           borderRadius: BorderRadius.circular(10), // Rounded border
           color: Colors.white, // Background color to make the card stand out
         ),
         child: Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           elevation: 5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +52,7 @@ class PlaceCard extends StatelessWidget {
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10),
                   ),
-                  child: Image.asset(
+                  child: Image.network(
                     image,
                     fit: BoxFit.cover,
                     width: double.infinity,
@@ -60,7 +73,7 @@ class PlaceCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
-                  price,
+                  'Harga $price',
                   style: const TextStyle(
                     color: Colors.green,
                     fontWeight: FontWeight.bold,

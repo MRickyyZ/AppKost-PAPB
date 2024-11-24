@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart'; // Import shared_preferences
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -12,6 +13,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _isLoading = false;
+
+  // Fungsi untuk menyimpan token ke SharedPreferences
+  Future<void> saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('auth_token', token); // Menyimpan token
+  }
 
   Future<void> _loginUser() async {
     final email = emailController.text.trim();
@@ -43,12 +50,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.statusCode == 200) {
         var responseData = await response.stream.bytesToString();
-        print(responseData); // Debugging: Log data respon
-        _showSuccessDialog("Login successful!");
-        Navigator.pushNamed(context, '/home'); // Arahkan ke halaman Home
+        var data = json.decode(responseData);
+        String token = data['token']; // Ambil token dari respon
+
+        // Simpan token ke SharedPreferences
+        await saveToken(token);
+
+        // Tampilkan dialog sukses dan kemudian navigasi
+        _showSuccessDialog("Login successful!", () {
+          Navigator.pushNamed(context, '/home'); // Arahkan ke halaman Home
+        });
       } else {
         var errorData = await response.stream.bytesToString();
-        print(errorData); // Debugging: Log data error
         _showErrorDialog("Login failed: ${response.reasonPhrase}");
       }
     } catch (error) {
@@ -79,7 +92,8 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _showSuccessDialog(String message) {
+  // Perbarui dialog sukses untuk menerima callback navigasi
+  void _showSuccessDialog(String message, VoidCallback onSuccess) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -89,7 +103,8 @@ class _LoginScreenState extends State<LoginScreen> {
           TextButton(
             child: const Text("Okay"),
             onPressed: () {
-              Navigator.of(ctx).pop();
+              Navigator.of(ctx).pop(); // Tutup dialog
+              onSuccess(); // Panggil callback navigasi
             },
           ),
         ],
