@@ -5,6 +5,7 @@ class PlaceCard extends StatelessWidget {
   final String image;
   final String price;
   final String location;
+  final VoidCallback onTap; // Tambahkan onTap di sini
 
   const PlaceCard({
     Key? key,
@@ -12,92 +13,92 @@ class PlaceCard extends StatelessWidget {
     required this.image,
     required this.price,
     required this.location,
+    required this.onTap, // Inisialisasi onTap
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        // Navigasi ke halaman detail dengan mengirim data
-        Navigator.pushNamed(
-          context,
-          '/detail',
-          arguments: {
-            'name': name,
-            'image': image,
-            'price': price,
-            'location': location,
-          },
-        );
-      },
+      onTap: onTap, // Langsung gunakan onTap
       child: Container(
-        padding: const EdgeInsets.all(8.0), // Padding around the card
+        margin: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          border: Border.all(
-              color: Colors.grey.shade300,
-              width: 1), // Border with light grey color
-          borderRadius: BorderRadius.circular(10), // Rounded border
-          color: Colors.white, // Background color to make the card stand out
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 6,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
-        child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          elevation: 5,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  ),
-                  child: Image.network(
-                    image,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                  ),
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Gambar
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(12),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Color(0xFF0D47A1), // Dark Blue
-                  ),
-                ),
+              child: Image.network(
+                image,
+                height: 140,
+                width: double.infinity,
+                fit: BoxFit.cover,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
-                  'Harga $price',
-                  style: const TextStyle(
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Row(
+            ),
+            // Konten Deskripsi
+            Expanded(
+              // Tambahkan ini untuk mengelola ruang secara fleksibel
+              child: Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.location_on, size: 16, color: Colors.grey),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        location,
-                        style: const TextStyle(color: Colors.black54),
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black87,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'IDR $price',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.green,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Icon(Icons.location_on,
+                            size: 16, color: Colors.grey),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            location,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.black54,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 8),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

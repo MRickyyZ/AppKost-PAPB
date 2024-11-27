@@ -30,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           placeData = jsonData
               .map((item) => {
+                    'id': item['id'], // Tambahkan ID di sini
                     'name': item['nama'],
                     'gender': item['gender'] == 'male' ? 'Cowok' : 'Cewek',
                     'image': item['image'],
@@ -73,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1A73E8),
+        backgroundColor: Colors.white,
         title: const Text('Home'),
       ),
       body: isLoading
@@ -139,7 +140,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisCount: 2,
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
-                        childAspectRatio: 0.8,
+                        childAspectRatio:
+                            0.75, // Ubah nilai ini jika card terlalu tinggi atau lebar
                       ),
                       itemCount: getFilteredPlaces().length,
                       itemBuilder: (context, index) {
@@ -149,6 +151,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           image: place['image'],
                           price: place['price'],
                           location: place['location'],
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/detail',
+                              arguments: {
+                                'kostId': place['id']
+                              }, // Pastikan place['id'] adalah int
+                            );
+                          },
                         );
                       },
                     ),

@@ -24,7 +24,12 @@ class MyApp extends StatelessWidget {
       initialRoute: '/splash',
       routes: {
         '/splash': (context) => SplashScreen(),
-        '/detail': (context) => DetailScreen(),
+        '/detail': (context) {
+  final arguments =
+      ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+  return DetailScreen(kostId: arguments['kostId']);
+},
+
         '/login': (context) => LoginScreen(),
         '/signup': (context) => SignUpScreen(),
         '/home': (context) => HomeScreen(),
