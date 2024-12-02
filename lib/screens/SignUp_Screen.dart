@@ -46,7 +46,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         "username": username,
         "email": email,
         "password": password,
-        "role": "user" // Role default sebagai "user"
+        "role": "user"
       });
       request.headers.addAll(headers);
 

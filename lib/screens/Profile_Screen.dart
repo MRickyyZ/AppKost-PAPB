@@ -19,21 +19,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
     return token ?? '';
   }
-
+  
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('auth_token'); // Hapus token dari SharedPreferences
+    await prefs.remove('auth_token');
     Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }
 
   Future<Map<String, dynamic>> fetchProfile() async {
-    final token = await getToken(); // Ambil token dari shared_preferences
+    final token = await getToken(); 
     if (token.isEmpty) {
       throw Exception('Token is empty or not found');
     }
 
     var headers = {
-      'Authorization': 'Bearer $token', // Gunakan token yang sudah diambil
+      'Authorization': 'Bearer $token', 
     };
 
     var request =
@@ -56,7 +56,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF1A73E8),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
         title: const Text('Profile'),
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
+        
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future:

@@ -56,43 +56,55 @@ class PlaceCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.black87,
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 8.0), // Margin kiri 8
+                      child: Text(
+                        name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      'IDR $price',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.green,
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 8.0), // Margin kiri 8
+                      child: Text(
+                        'IDR $price',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.green,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        const Icon(Icons.location_on,
-                            size: 16, color: Colors.grey),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            location,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.black54,
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 8.0), // Margin kiri 8
+                      child: Row(
+                        children: [
+                          const Icon(Icons.location_on,
+                              size: 16, color: Colors.grey),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              location,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.black54,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),

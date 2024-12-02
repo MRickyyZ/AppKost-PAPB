@@ -70,31 +70,40 @@ class _HomeScreenState extends State<HomeScreen> {
     return filteredList;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text('Home'),
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      backgroundColor: const Color(0xFF1A73E8),
+      automaticallyImplyLeading: false,
+      centerTitle: true,
+      title: const Text(
+        'Home'
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator()) // Loading spinner
-          : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // UI untuk lokasi, search, filter
-                    TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          _searchQuery = value;
-                        });
-                      },
+      titleTextStyle: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
+    ),
+    body: isLoading
+        ? const Center(child: CircularProgressIndicator()) // Loading spinner
+        : SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // UI untuk lokasi, search, filter
+                  TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        _searchQuery = value;
+                      });
+                    },
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.search),
-                        hintText: "Search House",
+                        hintText: "Cari Kost",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.0),
                         ),

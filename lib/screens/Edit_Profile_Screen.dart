@@ -126,7 +126,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               TextField(
                 controller: nameController,
                 decoration: const InputDecoration(
-                  labelText: 'Nama',
+                  labelText: 'Username',
                   labelStyle: TextStyle(color: Color(0xFF0D47A1)), // Dark Blue
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
