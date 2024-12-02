@@ -90,13 +90,13 @@ class PlaceCard extends StatelessWidget {
                       child: Row(
                         children: [
                           const Icon(Icons.location_on,
-                              size: 16, color: Colors.grey),
+                              size: 16, color: Color.fromARGB(255, 102, 184, 251)),
                           const SizedBox(width: 4),
                           Expanded(
                             child: Text(
                               location,
                               style: const TextStyle(
-                                fontSize: 12,
+                                fontSize: 14,
                                 color: Colors.black54,
                               ),
                               maxLines: 1,
